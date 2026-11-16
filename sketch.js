@@ -25,6 +25,7 @@ async function setup() {
 
   for (let rowNumber = 0; rowNumber < data.getRowCount(); rowNumber++) {
     let country = data.getString(rowNumber, "country");
+    let countryCode = data.getString(rowNumber, "country_code");
     let event = data.getString(rowNumber, "event_name");
     let medal = data.getString(rowNumber, "medal");
     let discipline = data.getString(rowNumber, "discipline");
@@ -38,6 +39,7 @@ async function setup() {
       if (!countryData) {
         countryData = {
           name: country,
+          code: countryCode,
           GOLD: 0,
           SILVER: 0,
           BRONZE: 0,
@@ -176,7 +178,8 @@ function draw() {
 
 function mousePressed() {
   if (hoveredCountry) {
-    let newURL = "detail.html?country=" + encodeURIComponent(hoveredCountry);
+    let selected = countries.find(item => item.name === hoveredCountry);
+    let newURL = "detail.html?country_code=" + encodeURIComponent(selected.code);
     window.location.href = newURL;
   }
 }

@@ -6,6 +6,7 @@ let bronzeColor = '#B97855';
 
 let data;
 let selectedCountry;
+let selectedCountryCode;
 
 let margin = 20;
 let labelWidth = 190;
@@ -16,6 +17,7 @@ async function setup() {
   data = await loadTable("assets/medallists.csv", ",", "header");
 
   let params = getURLParams();
+  selectedCountryCode = params.country_code;
   selectedCountry = params.country;
 
   createCanvas(windowWidth, windowHeight);
@@ -71,8 +73,10 @@ function draw() {
   // conta una sola medaglia per gara, paese e tipo.
   for (let rowNumber = 0; rowNumber < data.getRowCount(); rowNumber++) {
     let country = data.getString(rowNumber, "country");
+    let countryCode = data.getString(rowNumber, "country_code");
 
-    if (country === selectedCountry) {
+    if ((selectedCountryCode && countryCode === selectedCountryCode) || (!selectedCountryCode && country === selectedCountry)) {
+      selectedCountry = country;
       let discipline = data.getString(rowNumber, "discipline");
       let event = data.getString(rowNumber, "event_name");
       let medal = data.getString(rowNumber, "medal");
